@@ -91,11 +91,6 @@ type Schedule = {
 
 type Rule = {
   fieldId: string;
-  leadDays: number;
-  cyclePurchase: {
-    value: "monthly" | "triple";
-    label: string;
-  };
   schedule: Schedule;
 };
 
@@ -121,7 +116,7 @@ const getProductOnApi = async (
   productId: string | number
 ): Promise<ProductOnApi> => {
   return fetch(
-    `https://survaq-shopify-frontend.vercel.app/api/products/${productId}`
+    `https://survaq-api-production.aiji422990.workers.dev/products/${productId}`
   ).then((res) => res.json());
 };
 

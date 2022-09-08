@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width" />
       </Head>
-      <Header logo={pageProps.product.pageData.logo} />
+      <Header logo={pageProps.product?.pageData.logo} />
       <main className="item_main_content">
         <Component {...pageProps} />
       </main>

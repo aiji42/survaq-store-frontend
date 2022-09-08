@@ -26,16 +26,14 @@ a:link,a:visited,a:active{
   width: 100%;
   max-width: rem($maxWidthSize);
   margin: 0 auto;
-  padding: rem(15) rem(5) rem(10);
+  padding: rem(14) rem(5) rem(8);
 
   .item_logo{
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 20%;
-      max-width: 140px;
-    }
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 200px;
   }
 }
 

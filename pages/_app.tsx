@@ -10,14 +10,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width" />
-        {process.env.NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION && (
-          <meta
-            name="facebook-domain-verification"
-            content={process.env.NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION}
-          />
-        )}
       </Head>
-      <Header />
+      <Header logo={pageProps.product.pageData.logo} />
       <main className="item_main_content">
         <Component {...pageProps} />
       </main>

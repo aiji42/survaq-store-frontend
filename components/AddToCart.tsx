@@ -1,6 +1,6 @@
 import { Product } from "@/libs/getProduct";
 import Script from "next/script";
-import { MutableRefObject, Ref, useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
 import { MountOnOuterRoot } from "@/components/MountOnOuterRoot";
 
@@ -25,7 +25,7 @@ declare global {
 
 type Props = {
   product: Product;
-  productId: number;
+  productId: string;
 };
 
 type ProductObject = {

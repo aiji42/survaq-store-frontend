@@ -1,78 +1,3 @@
-import Shopify from "@shopify/shopify-api";
-
-type ProductOnShopify = {
-  id: string;
-  handle: string;
-  title: string;
-  createdAt: string;
-  updatedAt: string;
-  featuredImage: {
-    id: string;
-    width: number;
-    height: number;
-    url: string;
-    altText: string | null;
-  } | null;
-  images: { edges: { node: { url: string } }[] };
-  seo: {
-    title: string | null;
-    description: string | null;
-  };
-  description: string;
-  descriptionHtml: string;
-};
-
-const query = (handle: string) => `
-{
-  productByHandle(handle: "${handle}") {
-    id
-    handle
-    title
-    createdAt
-    updatedAt
-    featuredImage {
-      id
-      width
-      height
-      url
-      altText
-    }
-    images(first: 5) {
-      edges {
-        node {
-          url
-        }
-      }
-    }
-    seo {
-      title
-      description
-    }
-    description
-    descriptionHtml
-  }
-}
-`;
-
-const getProductOnShopify = async (
-  handle: string
-): Promise<ProductOnShopify> => {
-  const client = new Shopify.Clients.Graphql(
-    `${process.env.SHOPIFY_SHOP_NAME}.myshopify.com`,
-    process.env.SHOPIFY_API_SECRET_KEY
-  );
-  const {
-    body: {
-      // @ts-ignore
-      data: { productByHandle },
-    },
-  } = await client.query({
-    data: query(handle),
-  });
-
-  return productByHandle;
-};
-
 type Foundation = {
   fieldId: string;
   totalPrice: number;
@@ -102,7 +27,27 @@ type Variant = {
   skuSelectable: number;
 };
 
-type ProductOnApi = {
+type PageData = {
+  title?: string;
+  description?: string;
+  customHead?: string;
+  logo?: Image;
+  favicon?: Image;
+  body?: string;
+  customBody?: string;
+  productId?: string;
+  domain?: string;
+  ogpImageUrl?: string;
+  ogpShortTitle?: string;
+};
+
+type Image = {
+  url: string;
+  height: number;
+  width: number;
+};
+
+type ProductData = {
   id: string;
   productCode: string;
   productName: string;
@@ -112,29 +57,42 @@ type ProductOnApi = {
   rule: Rule;
 };
 
-const getProductOnApi = async (
-  productId: string | number
-): Promise<ProductOnApi> => {
+type ProductPageData = {
+  pageData: PageData;
+};
+
+const getProductPageData = async (code: string): Promise<ProductPageData> => {
   return fetch(
-    `https://survaq-api-production.aiji422990.workers.dev/products/${productId}`
+    `https://survaq-api-production.aiji422990.workers.dev/products/page-data/${code}`
   ).then((res) => res.json());
 };
 
-export type Product = ProductOnShopify &
-  Omit<
-    ProductOnApi,
-    "id" | "productCode" | "productName" | "variants" | "skuLabel"
-  > & {
-    variants: Array<Variant>;
-    skuLabel: string | null;
-  };
+const getProductData = async (id: string): Promise<ProductData> => {
+  return fetch(
+    `https://survaq-api-production.aiji422990.workers.dev/products/${id}`
+  ).then((res) => res.json());
+};
 
-export const getProduct = async (
-  handle: string,
-  id: string | number
-): Promise<Product> => {
-  const [shopify, { variants = [], skuLabel = null, foundation, rule }] =
-    await Promise.all([getProductOnShopify(handle), getProductOnApi(id)]);
+export type Product = {
+  variants: Array<Variant>;
+  skuLabel: string | null;
+  foundation: Foundation;
+  rule: Rule;
+  pageData: PageData;
+  productCode: string;
+};
 
-  return { ...shopify, variants, skuLabel, foundation, rule };
+export const getProduct = async (handle: string): Promise<Product> => {
+  const { pageData } = await getProductPageData(handle);
+  if (!pageData.productId) throw new Error();
+
+  const {
+    variants = [],
+    skuLabel = null,
+    foundation,
+    rule,
+    productCode,
+  } = await getProductData(pageData.productId);
+
+  return { variants, skuLabel, foundation, rule, productCode, pageData };
 };

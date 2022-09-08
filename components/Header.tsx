@@ -1,13 +1,20 @@
-import Head from "next/head";
+import Image from "next/image";
 
-export const Header = () => {
+export const Header = ({
+  logo,
+}: {
+  logo: { url: string; height: number; width: number };
+}) => {
   return (
     <header className="item_header">
-      <Head>
-        <link href="/logo.png" as="image" rel="preload" />
-      </Head>
       <div className="item_logo">
-        <img src="/logo.png" alt={process.env.NEXT_PUBLIC_STORE_DISPLAY_NAME} />
+        <Image
+          src={logo.url}
+          height={logo.height}
+          width={logo.width}
+          alt="logo"
+          priority
+        />
       </div>
     </header>
   );

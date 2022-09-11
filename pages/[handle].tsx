@@ -55,7 +55,7 @@ export const Page = (props: { product: Product; handle: string }) => {
         }}
       />
       <div
-        dangerouslySetInnerHTML={{ __html: props.product.pageData.body ?? "" }}
+        dangerouslySetInnerHTML={{ __html: props.product.descriptionHtml }}
       />
       {props.product.pageData.productId && (
         <AddToCart {...props} productId={props.product.pageData.productId} />

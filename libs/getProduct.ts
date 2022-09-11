@@ -1,3 +1,32 @@
+import Shopify from "@shopify/shopify-api";
+
+type ProductOnShopify = {
+  descriptionHtml: string;
+};
+
+const getProductOnShopify = async (
+  handle: string
+): Promise<ProductOnShopify> => {
+  const client = new Shopify.Clients.Graphql(
+    `${process.env.SHOPIFY_SHOP_NAME}.myshopify.com`,
+    process.env.SHOPIFY_API_SECRET_KEY
+  );
+  const {
+    body: {
+      // @ts-ignore
+      data: { productByHandle },
+    },
+  } = await client.query({
+    data: `{
+              productByHandle(handle: "${handle}") {
+                descriptionHtml
+              }
+           }`,
+  });
+
+  return productByHandle;
+};
+
 type Foundation = {
   fieldId: string;
   totalPrice: number;
@@ -33,7 +62,7 @@ type PageData = {
   customHead?: string;
   logo?: Image;
   favicon?: Image;
-  body?: string;
+  productHandle?: string;
   customBody?: string;
   productId?: string;
   domain?: string;
@@ -80,19 +109,28 @@ export type Product = {
   rule: Rule;
   pageData: PageData;
   productCode: string;
+  descriptionHtml: string;
 };
 
 export const getProduct = async (handle: string): Promise<Product> => {
   const { pageData } = await getProductPageData(handle);
-  if (!pageData.productId) throw new Error();
+  if (!pageData.productId || !pageData.productHandle) throw new Error();
 
-  const {
-    variants = [],
-    skuLabel = null,
+  const [
+    { variants = [], skuLabel = null, foundation, rule, productCode },
+    { descriptionHtml },
+  ] = await Promise.all([
+    getProductData(pageData.productId),
+    getProductOnShopify(pageData.productHandle),
+  ]);
+
+  return {
+    variants,
+    skuLabel,
     foundation,
     rule,
     productCode,
-  } = await getProductData(pageData.productId);
-
-  return { variants, skuLabel, foundation, rule, productCode, pageData };
+    pageData,
+    descriptionHtml,
+  };
 };

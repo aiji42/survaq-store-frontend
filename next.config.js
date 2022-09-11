@@ -4,13 +4,15 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["cdn.shopify.com"],
+    domains: ["cdn.shopify.com", "images.microcms-assets.io"],
   },
-  redirects: () => [{
-    source: '/products/:path*',
-    destination: '/',
-    statusCode: 301
-  }]
+  redirects: () => [
+    {
+      source: "/products/:path*",
+      destination: "/",
+      statusCode: 301,
+    },
+  ],
 };
 
 module.exports = nextConfig;

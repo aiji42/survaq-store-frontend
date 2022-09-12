@@ -57,7 +57,7 @@ export const Page = (props: { product: Product; handle: string }) => {
       <div
         dangerouslySetInnerHTML={{ __html: props.product.descriptionHtml }}
       />
-      {props.product.pageData.productId && (
+      {props.product.pageData.productId && props.product.pageData.buyButton && (
         <AddToCart {...props} productId={props.product.pageData.productId} />
       )}
     </>

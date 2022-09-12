@@ -68,6 +68,7 @@ type PageData = {
   domain?: string;
   ogpImageUrl?: string;
   ogpShortTitle?: string;
+  buyButton?: boolean;
 };
 
 type Image = {

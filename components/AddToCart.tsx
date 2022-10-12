@@ -178,16 +178,15 @@ const makeOnLoad =
           },
           popup: false,
           events: {
-            afterRender: (cart: CartObject) => {
-              console.log(cart);
-              const url = new URL(cart.model.webUrl);
-              Array.from(new URL(location.href).searchParams).forEach(
-                ([key, value]) => {
-                  if (key.startsWith("utm_"))
-                    url.searchParams.append(key, value);
-                }
-              );
+            afterInit: (cart: CartObject) => {
               cart.onCheckout = () => {
+                const url = new URL(cart.model.webUrl);
+                Array.from(new URL(location.href).searchParams).forEach(
+                  ([key, value]) => {
+                    if (key.startsWith("utm_"))
+                      url.searchParams.append(key, value);
+                  }
+                );
                 cart.checkout.open(url.toString());
               };
             },

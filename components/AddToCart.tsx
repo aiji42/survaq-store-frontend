@@ -33,6 +33,14 @@ type ProductObject = {
   setCustomAttributes: (arg: CustomAttributes) => void;
 };
 
+type CartObject = {
+  onCheckout: () => void;
+  checkout: {
+    open: (s: string) => void;
+  };
+  model: { webUrl: string };
+};
+
 export const AddToCart = ({
   product: { variants, rule, skuLabel },
   productId,
@@ -169,6 +177,20 @@ const makeOnLoad =
             button: "購入手続きへ進む",
           },
           popup: false,
+          events: {
+            afterInit: (cart: CartObject) => {
+              cart.onCheckout = () => {
+                const url = new URL(cart.model.webUrl);
+                Array.from(new URL(location.href).searchParams).forEach(
+                  ([key, value]) => {
+                    if (key.startsWith("utm_"))
+                      url.searchParams.append(key, value);
+                  }
+                );
+                cart.checkout.open(url.toString());
+              };
+            },
+          },
         },
         toggle: {
           styles: {

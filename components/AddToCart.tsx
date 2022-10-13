@@ -54,6 +54,17 @@ export const AddToCart = ({
         key: label,
         value: selected.name,
       })),
+      ...Array.from(
+        new URL(location.href).searchParams
+      ).reduce<CustomAttributes>((res, [key, value]) => {
+        return key.startsWith("utm_")
+          ? [...res, { key: `_${key}`, value }]
+          : res;
+      }, []),
+      {
+        key: "_source",
+        value: `${location.origin}${location.pathname}`,
+      },
       {
         key: "配送予定",
         value: `${rule.schedule.text}(${rule.schedule.subText})`,

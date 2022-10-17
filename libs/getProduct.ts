@@ -66,6 +66,7 @@ type PageData = {
   customBody?: string;
   productId?: string;
   domain?: string;
+  pathname?: string;
   ogpImageUrl?: string;
   ogpShortTitle?: string;
   buyButton?: boolean;
@@ -79,7 +80,6 @@ type Image = {
 
 type ProductData = {
   id: string;
-  productCode: string;
   productName: string;
   variants?: Array<Variant>;
   skuLabel?: string;
@@ -109,7 +109,6 @@ export type Product = {
   foundation: Foundation;
   rule: Rule;
   pageData: PageData;
-  productCode: string;
   descriptionHtml: string;
 };
 
@@ -118,7 +117,7 @@ export const getProduct = async (handle: string): Promise<Product> => {
   if (!pageData.productId || !pageData.productHandle) throw new Error();
 
   const [
-    { variants = [], skuLabel = null, foundation, rule, productCode },
+    { variants = [], skuLabel = null, foundation, rule },
     { descriptionHtml },
   ] = await Promise.all([
     getProductData(pageData.productId),
@@ -130,7 +129,6 @@ export const getProduct = async (handle: string): Promise<Product> => {
     skuLabel,
     foundation,
     rule,
-    productCode,
     pageData,
     descriptionHtml,
   };

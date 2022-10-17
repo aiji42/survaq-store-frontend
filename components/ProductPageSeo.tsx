@@ -2,8 +2,14 @@ import { NextSeo } from "next-seo";
 import { Product } from "@/libs/getProduct";
 
 export const ProductPageSeo = ({
-  productCode,
-  pageData: { title, description, ogpShortTitle, ogpImageUrl, domain },
+  pageData: {
+    title,
+    description,
+    ogpShortTitle,
+    ogpImageUrl,
+    domain,
+    pathname,
+  },
 }: Product) => {
   return (
     <NextSeo
@@ -11,7 +17,7 @@ export const ProductPageSeo = ({
       description={description}
       openGraph={{
         site_name: ogpShortTitle,
-        url: `https://${domain}/${productCode}`,
+        url: `https://${domain}/${pathname}`,
         type: "article",
         title,
         description,

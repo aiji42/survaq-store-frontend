@@ -8,7 +8,6 @@ type Body = {
   contents: {
     old: {
       publishValue: {
-        productCode: string;
         pageData?: {
           domain?: string;
           pathname?: string;
@@ -21,7 +20,6 @@ type Body = {
     } | null;
     new: {
       publishValue: {
-        productCode: string;
         pageData?: {
           domain?: string;
           pathname?: string;

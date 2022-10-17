@@ -7,17 +7,15 @@ export const Header = ({
 }) => {
   return (
     <header className="item_header">
-      <div className="item_logo">
-        {logo && (
-          <Image
-            src={logo.url}
-            height={logo.height}
-            width={logo.width}
-            alt="logo"
-            priority
-          />
-        )}
-      </div>
+      {logo && (
+        <Image
+          src={logo.url}
+          height={logo.height}
+          width={logo.width}
+          alt="logo"
+          priority
+        />
+      )}
     </header>
   );
 };

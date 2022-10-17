@@ -17,10 +17,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const data = await res.json();
 
-  if (data.productCode)
+  if (data.pageData?.pathname)
     return {
       redirect: {
-        destination: `/${data.productCode}`,
+        destination: `/${data.pageData.pathname}`,
         statusCode: 302,
       },
     };

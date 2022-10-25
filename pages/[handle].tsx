@@ -25,10 +25,12 @@ export const getStaticProps: GetStaticProps<
         product,
         handle,
       },
+      revalidate: 3600,
     };
   } catch (_) {
     return {
       notFound: true,
+      revalidate: 60,
     };
   }
 };

@@ -59,7 +59,10 @@ const handler: NextApiHandler = async (req, res) => {
     await Promise.all(
       [...new Set([oldEndpoint, newEndpoint, oldEndpointSub, newEndpointSub])]
         .filter(Boolean)
-        .map((endpoint) => fetch(endpoint))
+        .map((endpoint) => {
+          console.log("revalidate:", endpoint);
+          return fetch(endpoint);
+        })
     );
 
     return res.status(200).send({});

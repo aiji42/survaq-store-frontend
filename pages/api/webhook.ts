@@ -56,11 +56,17 @@ const handler: NextApiHandler = async (req, res) => {
       newEndpointSub = `https://${body.contents.new.publishValue.pageDataSub.domain}/api/revalidate/${body.contents.new.publishValue.pageDataSub.pathname}`;
     }
 
+    console.log("revalidate:", {
+      oldEndpoint,
+      newEndpoint,
+      oldEndpointSub,
+      newEndpointSub,
+    });
+
     await Promise.all(
       [...new Set([oldEndpoint, newEndpoint, oldEndpointSub, newEndpointSub])]
         .filter(Boolean)
         .map((endpoint) => {
-          console.log("revalidate:", endpoint);
           return fetch(endpoint);
         })
     );

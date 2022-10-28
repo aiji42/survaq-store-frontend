@@ -27,7 +27,8 @@ export const getStaticProps: GetStaticProps<
       },
       revalidate: 3600,
     };
-  } catch (_) {
+  } catch (e) {
+    console.error(e);
     return {
       notFound: true,
       revalidate: 60,

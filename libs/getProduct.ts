@@ -93,14 +93,14 @@ type ProductPageData = {
 
 const getProductPageData = async (code: string): Promise<ProductPageData> => {
   return fetch(
-    `https://survaq-api-production.aiji422990.workers.dev/products/page-data/${code}`
+    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/${code}`
   ).then((res) => res.json());
 };
 
 const getProductData = async (id: string): Promise<ProductData> => {
-  return fetch(
-    `https://survaq-api-production.aiji422990.workers.dev/products/${id}`
-  ).then((res) => res.json());
+  return fetch(`${process.env.SURVAQ_API_ORIGIN}/products/${id}`).then((res) =>
+    res.json()
+  );
 };
 
 export type Product = {

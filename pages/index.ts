@@ -7,8 +7,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
 
   const res = await fetch(
-    "https://survaq-api-production.aiji422990.workers.dev/products/page-data/by-domain/" +
-      req.headers.host
+    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/by-domain/${req.headers.host}`
   );
   if (!res.ok)
     return {

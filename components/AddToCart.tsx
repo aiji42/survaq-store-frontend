@@ -144,6 +144,7 @@ const makeOnLoad =
           },
           text: {
             button: "カートに追加",
+            unavailable: "お取り扱いできません",
           },
           events: {
             afterRender: (product: ProductObject) => {

@@ -102,6 +102,13 @@ export const AddToCart = ({
             </div>
           </div>
         ))}
+        {schedule.text !== rule.schedule.text && (
+          <p className="shopify-buy__message">
+            ご選択いただいた商品の中に品薄のものが含まれております。配送時期は
+            {schedule.text.replace(/(\d{4}|年)/g, "")}
+            を予定しております。
+          </p>
+        )}
       </MountOnOuterRoot>
       <Script
         src="/buybutton.js"

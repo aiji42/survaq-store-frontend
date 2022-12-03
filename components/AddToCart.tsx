@@ -3,6 +3,7 @@ import Script from "next/script";
 import { MutableRefObject, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
 import { MountOnOuterRoot } from "@/components/MountOnOuterRoot";
+import { latest } from "@/libs/schedule";
 
 type CustomAttributes = { key: string; value: string }[];
 
@@ -47,6 +48,10 @@ export const AddToCart = ({
 }: Props) => {
   const target = useRef<HTMLDivElement>();
   const { selects, handleSku } = useSkuSelectors({ skuLabel });
+  const schedule = latest([
+    rule.schedule,
+    ...selects.map(({ selected: { schedule } }) => schedule),
+  ]);
 
   if (typeof window !== "undefined")
     window.ShopifyCustomAttribute = [
@@ -67,7 +72,7 @@ export const AddToCart = ({
       },
       {
         key: "配送予定",
-        value: `${rule.schedule.text}(${rule.schedule.subText})`,
+        value: `${schedule.text}(${schedule.subText})`,
       },
     ];
 

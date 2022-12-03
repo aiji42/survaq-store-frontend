@@ -10,7 +10,7 @@ export const useSkuSelectors = ({ skuLabel }: Pick<Product, "skuLabel">) => {
       status: {
         label: string;
         variant: Variant;
-        selected: { code: string; name: string };
+        selected: Variant["skus"][number];
       }[],
       action:
         | { type: "reset"; variant: Variant | undefined }
@@ -21,21 +21,18 @@ export const useSkuSelectors = ({ skuLabel }: Pick<Product, "skuLabel">) => {
         if (!variant) return [];
         if (variant.variantId === status[0]?.variant.variantId)
           return [...status];
-        const { code, name } = variant.skus[0];
         return times(variant.skuSelectable).map((index) => ({
           label: skuLabel ? skuLabel.replace(/#/g, String(index + 1)) : "",
           variant,
-          selected: { code, name },
+          selected: variant.skus[0],
         }));
       }
 
-      status[action.index].selected = {
-        code: action.value,
-        name:
-          status[action.index].variant.skus.find(
-            ({ code }) => code === action.value
-          )?.name ?? "",
-      };
+      const sku = status[action.index].variant.skus.find(
+        ({ code }) => code === action.value
+      );
+      if (!sku) throw new Error();
+      status[action.index].selected = sku;
 
       return status;
     },

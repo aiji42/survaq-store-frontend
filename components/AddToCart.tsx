@@ -104,9 +104,10 @@ export const AddToCart = ({
         ))}
         {schedule.text !== rule.schedule.text && (
           <p className="shopify-buy__message">
-            ご選択いただいた商品の中に品薄のものが含まれております。配送時期は
-            {schedule.text.replace(/(\d{4}|年)/g, "")}
-            を予定しております。
+            &quot;{schedule.text.replace(/(\d{4}|年)/g, "")}&quot;
+            の商品が含まれております。
+            <br />
+            ※2点以上ご注文の場合、全て揃った時点でまとめて発送
           </p>
         )}
       </MountOnOuterRoot>

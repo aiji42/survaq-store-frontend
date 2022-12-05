@@ -50,6 +50,7 @@ export const AddToCart = ({
   const { selects, handleSku } = useSkuSelectors({ skuLabel });
   const schedule = latest([
     rule.schedule,
+    ...selects.map(({ variant }) => variant.schedule),
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
 

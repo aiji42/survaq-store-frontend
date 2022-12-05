@@ -59,6 +59,7 @@ type Variant = {
     schedule: Omit<Schedule, "texts"> | null;
   }[];
   skuSelectable: number;
+  schedule: Omit<Schedule, "texts"> | null;
 };
 
 type PageData = {

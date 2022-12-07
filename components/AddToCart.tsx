@@ -105,7 +105,7 @@ export const AddToCart = ({
         ))}
         {schedule.text !== rule.schedule.text && (
           <p className="shopify-buy__message">
-            &quot;{schedule.text.replace(/(\d{4}|年)/g, "")}&quot;
+            &quot;配送予定：{schedule.text.replace(/(\d{4}|年)/g, "")}&quot;
             の商品が含まれております。
             <br />
             ※2点以上ご注文の場合、全て揃った時点でまとめて発送

@@ -47,10 +47,10 @@ export const AddToCart = ({
   productId,
 }: Props) => {
   const target = useRef<HTMLDivElement>();
-  const { selects, handleSku } = useSkuSelectors({ skuLabel });
+  const { selects, variant, handleSku } = useSkuSelectors({ skuLabel });
   const schedule = latest([
     rule.schedule,
-    ...selects.map(({ variant }) => variant.schedule),
+    variant?.schedule ?? null,
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
 
@@ -80,7 +80,7 @@ export const AddToCart = ({
   return (
     <>
       <MountOnOuterRoot target={target.current}>
-        {selects.map(({ label, selected, variant }, index) => (
+        {selects.map(({ label, selected }, index) => (
           <div key={index} className="shopify-buy__option-select">
             <label className="shopify-buy__option-select__label">{label}</label>
             <div className="shopify-buy__option-select-wrapper">
@@ -91,7 +91,7 @@ export const AddToCart = ({
                 }
                 defaultValue={selected.code}
               >
-                {variant.skus.map(({ name, code }) => (
+                {variant?.skus.map(({ name, code }) => (
                   <option key={code} value={code}>
                     {name}
                   </option>

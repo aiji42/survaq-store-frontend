@@ -1,4 +1,6 @@
-import { Product } from "@/libs/getProduct";
+"use client";
+
+import { ProductPageData } from "@/libs/getProduct";
 import Script from "next/script";
 import { MutableRefObject, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
@@ -24,11 +26,6 @@ declare global {
   }
 }
 
-type Props = {
-  product: Product;
-  productId: string;
-};
-
 type ProductObject = {
   selectedVariantTrackingInfo: { id: string };
   setCustomAttributes: (arg: CustomAttributes) => void;
@@ -42,14 +39,11 @@ type CartObject = {
   model: { webUrl: string };
 };
 
-export const AddToCart = ({
-  product: { variants, rule, skuLabel },
-  productId,
-}: Props) => {
+export const AddToCart = (product: ProductPageData) => {
   const target = useRef<HTMLDivElement>();
-  const { selects, variant, handleSku } = useSkuSelectors({ skuLabel });
+  const { selects, variant, handleSku } = useSkuSelectors();
   const schedule = latest([
-    rule.schedule,
+    product.schedule,
     variant?.schedule ?? null,
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
@@ -103,7 +97,7 @@ export const AddToCart = ({
             </div>
           </div>
         ))}
-        {schedule.text !== rule.schedule.text && (
+        {schedule.text !== product.schedule.text && (
           <p className="shopify-buy__message">
             &quot;配送予定：{schedule.text.replace(/(\d{4}|年)/g, "")}&quot;
             の商品が含まれております。
@@ -115,7 +109,12 @@ export const AddToCart = ({
       <Script
         src="/buybutton.js"
         strategy="afterInteractive"
-        onLoad={makeOnLoad({ productId, variants, target, handleSku })}
+        onLoad={makeOnLoad({
+          productId: product.productId,
+          variants: product.variants,
+          target,
+          handleSku,
+        })}
       />
     </>
   );
@@ -129,7 +128,7 @@ const makeOnLoad =
     handleSku,
   }: {
     productId: number | string;
-    variants: Product["variants"];
+    variants: ProductPageData["variants"];
     target: MutableRefObject<HTMLDivElement | undefined>;
     handleSku: ReturnType<typeof useSkuSelectors>["handleSku"];
   }) =>

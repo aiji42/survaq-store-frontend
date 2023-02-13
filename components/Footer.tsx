@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import icons from "../public/payment-icons.jpg";
 
 export const Footer = () => {

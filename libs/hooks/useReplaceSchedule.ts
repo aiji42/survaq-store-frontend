@@ -12,10 +12,6 @@ const replaceSchedule = (
 
 export const useReplaceSchedule = (product: ProductPageData) => {
   useEffect(() => {
-    console.log("debug---------");
-    console.log(
-      document.querySelectorAll<HTMLSpanElement>(".delivery-schedule")
-    );
     document
       .querySelectorAll<HTMLSpanElement>(".delivery-schedule")
       .forEach((t) => {

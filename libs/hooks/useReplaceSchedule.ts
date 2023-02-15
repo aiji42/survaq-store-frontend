@@ -1,6 +1,5 @@
 import { ProductPageData } from "@/libs/getProduct";
 import { useEffect } from "react";
-import * as console from "console";
 
 const replaceSchedule = (
   schedule: ProductPageData["schedule"],

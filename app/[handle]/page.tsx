@@ -5,6 +5,7 @@ import Head from "next/head";
 import { ProductPageSeo } from "@/components/ProductPageSeo";
 import { AddToCart } from "@/components/AddToCart";
 import { notFound } from "next/navigation";
+import { ReplaceSchedule } from "@/components/ReplaceSchedule";
 
 export const dynamic = "force-dynamic";
 export const runtime = "experimental-edge";
@@ -38,6 +39,7 @@ export default async function Page({ params: { handle } }: Props) {
         <div dangerouslySetInnerHTML={{ __html: props.body ?? "" }} />
         {props.buyButton && <AddToCart {...props} />}
       </main>
+      <ReplaceSchedule {...props} />
       <Footer />
     </>
   );

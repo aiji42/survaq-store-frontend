@@ -2,7 +2,7 @@ import { ProductPageData } from "@/libs/getProduct";
 import { useEffect } from "react";
 
 const replaceSchedule = (
-  schedule: ProductPageData['schedule'],
+  schedule: ProductPageData["schedule"],
   target: HTMLDivElement | HTMLParagraphElement | HTMLSpanElement
 ) => {
   const index = Number(target.dataset.index ?? 0);
@@ -12,6 +12,10 @@ const replaceSchedule = (
 
 export const useReplaceSchedule = (product: ProductPageData) => {
   useEffect(() => {
+    console.log("debug---------");
+    console.log(
+      document.querySelectorAll<HTMLSpanElement>(".delivery-schedule")
+    );
     document
       .querySelectorAll<HTMLSpanElement>(".delivery-schedule")
       .forEach((t) => {

@@ -37,6 +37,9 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
     },
+    icons: {
+      icon: props.favicon?.url,
+    },
   };
 }
 
@@ -47,7 +50,6 @@ export default async function Page({ params: { handle } }: Props) {
   return (
     <>
       <ProductPageCustomHead {...props} />
-      {props.favicon && <link rel="icon" href={props.favicon.url} />}
       <div
         dangerouslySetInnerHTML={{
           __html: props.customBody ?? "",

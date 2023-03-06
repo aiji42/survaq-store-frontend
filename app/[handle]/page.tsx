@@ -47,6 +47,7 @@ export default async function Page({ params: { handle } }: Props) {
   return (
     <>
       <ProductPageCustomHead {...props} />
+      {props.favicon && <link rel="icon" href={props.favicon.url} />}
       <div
         dangerouslySetInnerHTML={{
           __html: props.customBody ?? "",

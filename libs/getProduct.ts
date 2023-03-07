@@ -54,7 +54,8 @@ export const getProduct = async (
   code: string
 ): Promise<ProductPageData | null> => {
   const res = await fetch(
-    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/${code}/supabase`
+    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/${code}/supabase`,
+    { cache: "no-store" }
   );
   if (res.status === 404) {
     return null;

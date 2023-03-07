@@ -40,6 +40,13 @@ export async function generateMetadata({
     icons: {
       icon: props.favicon?.url,
     },
+    formatDetection: {
+      telephone: false,
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 

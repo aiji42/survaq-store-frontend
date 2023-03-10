@@ -14,7 +14,7 @@ export const ProductPageCustomHead = ({ customHead }: ProductPageData) => {
           id={script}
           key={i}
           dangerouslySetInnerHTML={{ __html: script }}
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
       ))}
     </>

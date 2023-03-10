@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 export const runtime = "experimental-edge";
 
-export default async () => {
+const Page = async () => {
   const host = headers().get("host");
 
   const res = await fetch(
@@ -17,3 +17,5 @@ export default async () => {
 
   return redirect(json.pathname);
 };
+
+export default Page;

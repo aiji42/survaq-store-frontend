@@ -48,7 +48,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params: { handle } }: Props) {
+const Page = async ({ params: { handle } }: Props) => {
   const props = await getProduct(handle);
   if (!props) return notFound();
 
@@ -69,4 +69,6 @@ export default async function Page({ params: { handle } }: Props) {
       <Footer />
     </>
   );
-}
+};
+
+export default Page;

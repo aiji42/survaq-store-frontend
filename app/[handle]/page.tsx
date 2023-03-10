@@ -7,6 +7,8 @@ import { ReplaceSchedule } from "@/components/ReplaceSchedule";
 import { Metadata } from "next";
 import { ProductPageCustomHead } from "@/components/ProductPageCustomHead";
 
+export const runtime = "experimental-edge";
+
 type Props = {
   params: { handle: string };
 };

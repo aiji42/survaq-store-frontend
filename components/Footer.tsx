@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import icons from "../public/payment-icons.jpg";
 
 export const Footer = () => {
@@ -25,7 +25,7 @@ export const Footer = () => {
       </ul>
       <div className="payment">
         <figure className="payment_ico">
-          <Image src={icons} alt="支払方法" />
+          <Image src={icons} alt="支払方法" sizes="100vw" />
         </figure>
       </div>
       <div className="copyright">&copy; 2022 SurvaQ inc.</div>

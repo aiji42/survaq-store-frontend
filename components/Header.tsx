@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { ProductPageData } from "@/libs/getProduct";
 
 export const Header = (propduct: ProductPageData) => {
@@ -11,6 +11,7 @@ export const Header = (propduct: ProductPageData) => {
           width={propduct.logo.width}
           alt="logo"
           priority
+          sizes="100vw"
         />
       )}
     </header>

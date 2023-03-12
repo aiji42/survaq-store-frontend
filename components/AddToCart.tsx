@@ -6,7 +6,6 @@ import { MutableRefObject, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
 import { MountOnOuterRoot } from "@/components/MountOnOuterRoot";
 import { latest } from "@/libs/schedule";
-import { useReplaceSchedule } from "@/libs/hooks/useReplaceSchedule";
 
 type CustomAttributes = { key: string; value: string }[];
 

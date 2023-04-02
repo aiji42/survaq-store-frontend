@@ -54,6 +54,14 @@ export const AddToCart = (product: ProductPageData) => {
         key: label,
         value: selected.name,
       })),
+      {
+        key: "_skus",
+        value: JSON.stringify(
+          variant?.skuSelectable === 0
+            ? variant.skus.map(({ code }) => code)
+            : selects.map(({ selected }) => selected.code)
+        ),
+      },
       ...Array.from(
         new URL(location.href).searchParams
       ).reduce<CustomAttributes>((res, [key, value]) => {

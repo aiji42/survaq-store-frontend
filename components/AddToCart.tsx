@@ -44,7 +44,7 @@ export const AddToCart = (product: ProductPageData) => {
   const { selects, variant, handleSku } = useSkuSelectors();
   const schedule = latest([
     product.schedule,
-    variant?.schedule ?? null,
+    variant?.defaultSchedule ?? null,
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
 
@@ -56,11 +56,10 @@ export const AddToCart = (product: ProductPageData) => {
       })),
       {
         key: "_skus",
-        value: JSON.stringify(
-          variant?.skuSelectable === 0
-            ? variant.skus.map(({ code }) => code)
-            : selects.map(({ selected }) => selected.code)
-        ),
+        value: JSON.stringify([
+          ...(variant?.baseSKUs.map(({ code }) => code) ?? []),
+          ...selects.map(({ selected }) => selected.code),
+        ]),
       },
       ...Array.from(
         new URL(location.href).searchParams
@@ -93,7 +92,7 @@ export const AddToCart = (product: ProductPageData) => {
                 }
                 defaultValue={selected.code}
               >
-                {variant?.skus.map(({ name, code }) => (
+                {variant?.selectableSKUs.map(({ name, code }) => (
                   <option key={code} value={code}>
                     {name}
                   </option>

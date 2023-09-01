@@ -1,12 +1,9 @@
-import { ProductPageData } from "@/libs/getProduct";
+import { Schedule, SKU } from "@/libs/getProduct";
 
-type DeliverySchedule = Exclude<
-  ProductPageData["variants"][number]["skus"][number]["schedule"],
-  null
->;
+type DeliverySchedule = Exclude<SKU["schedule"], null>;
 
 export const latest = (
-  schedules: Array<ProductPageData["schedule"] | DeliverySchedule | null>
+  schedules: Array<Schedule | DeliverySchedule | null>
 ): DeliverySchedule => {
   return schedules
     .filter((schedule): schedule is DeliverySchedule => !!schedule)

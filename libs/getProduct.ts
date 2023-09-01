@@ -1,4 +1,4 @@
-type Schedule = {
+export type Schedule = {
   year: number;
   month: number;
   term: "early" | "middle" | "late";
@@ -8,18 +8,21 @@ type Schedule = {
   subText: string;
 };
 
-type Variant = {
+export type SKU = {
+  code: string;
+  name: string;
+  subName: string;
+  schedule: Omit<Schedule, "texts"> | null;
+};
+
+export type Variant = {
   variantId: string;
   variantName: string;
   skuLabel: string | null;
-  skus: {
-    code: string;
-    name: string;
-    subName: string;
-    schedule: Omit<Schedule, "texts"> | null;
-  }[];
   skuSelectable: number;
-  schedule: Omit<Schedule, "texts"> | null;
+  baseSKUs: SKU[];
+  selectableSKUs: SKU[];
+  defaultSchedule: Omit<Schedule, "texts"> | null;
 };
 
 type PageDataOriginal = {

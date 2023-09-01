@@ -1,8 +1,8 @@
-import { ProductPageData } from "@/libs/getProduct";
+import { ProductPageData, Schedule } from "@/libs/getProduct";
 import { useEffect } from "react";
 
 const replaceSchedule = (
-  schedule: ProductPageData["schedule"],
+  schedule: Schedule,
   target: HTMLDivElement | HTMLParagraphElement | HTMLSpanElement
 ) => {
   const index = Number(target.dataset.index ?? 0);

@@ -1,11 +1,10 @@
 import { useReducer } from "react";
 import { times } from "@/libs/times";
-import { ProductPageData } from "@/libs/getProduct";
+import { SKU, Variant } from "@/libs/getProduct";
 
-type Variant = ProductPageData["variants"][number];
 type Selects = {
   label: string;
-  selected: Variant["skus"][number];
+  selected: SKU;
 }[];
 
 export const useSkuSelectors = () => {
@@ -23,15 +22,17 @@ export const useSkuSelectors = () => {
           return { selects: [...status.selects], variant };
         return {
           selects: times(variant.skuSelectable).map((index) => ({
-            label: variant.skuLabel ? variant.skuLabel.replace(/#/g, String(index + 1)) : "",
+            label: variant.skuLabel
+              ? variant.skuLabel.replace(/#/g, String(index + 1))
+              : "",
             variant,
-            selected: variant.skus[0],
+            selected: variant.selectableSKUs[0],
           })),
           variant,
         };
       }
 
-      const sku = status.variant?.skus.find(
+      const sku = status.variant?.selectableSKUs.find(
         ({ code }) => code === action.value
       );
       if (!sku) throw new Error();

@@ -85,3 +85,15 @@ export const getProduct = async (
       : null,
   };
 };
+
+export const getProductDataById = async (id: string): Promise<ProductData> => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SURVAQ_API_ORIGIN}/products/${id}/supabase`,
+    { cache: "no-store" }
+  );
+  if (res.status !== 200) {
+    throw new Error(await res.text());
+  }
+
+  return (await res.json()) as ProductData;
+};

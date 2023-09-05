@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ReplaceSchedule } from "@/components/ReplaceSchedule";
 import { Metadata } from "next";
 import { ProductPageCustomHead } from "@/components/ProductPageCustomHead";
+import { ActivateAddVariantToCart } from "@/components/ActivateAddVariantToCart";
 
 export const runtime = "experimental-edge";
 
@@ -66,6 +67,7 @@ const Page = async ({ params: { handle } }: Props) => {
         {props.buyButton && <AddToCart {...props} />}
       </main>
       <ReplaceSchedule {...props} />
+      <ActivateAddVariantToCart />
       <Footer />
     </>
   );

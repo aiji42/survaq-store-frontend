@@ -6,25 +6,10 @@ import { MutableRefObject, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
 import { MountOnOuterRoot } from "@/components/MountOnOuterRoot";
 import { latest } from "@/libs/schedule";
-
-type CustomAttributes = { key: string; value: string }[];
-
-declare global {
-  interface Window {
-    ShopifyCustomAttribute?: CustomAttributes;
-    ShopifyBuy: {
-      buildClient: (arg: {
-        domain: string;
-        storefrontAccessToken: string;
-      }) => unknown;
-      UI: {
-        init: (arg: unknown) => {
-          createComponent: (name: string, options: unknown) => void;
-        };
-      };
-    };
-  }
-}
+import {
+  CustomAttributes,
+  makeCustomAttributes,
+} from "@/libs/makeCustomAttributes";
 
 type ProductObject = {
   selectedVariantTrackingInfo: { id: string };
@@ -50,32 +35,15 @@ export const AddToCart = (product: ProductPageData) => {
 
   if (typeof window !== "undefined")
     window.ShopifyCustomAttribute = [
+      ...makeCustomAttributes(
+        variant,
+        schedule,
+        selects.map(({ selected }) => selected.code)
+      ),
       ...selects.map(({ label, selected }) => ({
         key: label,
         value: selected.name,
       })),
-      {
-        key: "_skus",
-        value: JSON.stringify([
-          ...(variant?.baseSKUs.map(({ code }) => code) ?? []),
-          ...selects.map(({ selected }) => selected.code),
-        ]),
-      },
-      ...Array.from(
-        new URL(location.href).searchParams
-      ).reduce<CustomAttributes>((res, [key, value]) => {
-        return key.startsWith("utm_")
-          ? [...res, { key: `_${key}`, value }]
-          : res;
-      }, []),
-      {
-        key: "_source",
-        value: `${location.origin}${location.pathname}`,
-      },
-      {
-        key: "配送予定",
-        value: `${schedule.text}(${schedule.subText})`,
-      },
     ];
 
   return (
@@ -141,7 +109,7 @@ const makeOnLoad =
   }) =>
   () => {
     const client = window.ShopifyBuy.buildClient({
-      domain: "survaq.myshopify.com",
+      domain: process.env.NEXT_PUBLIC_STORE_DOMAIN ?? "",
       storefrontAccessToken:
         process.env.NEXT_PUBLIC_STORE_FRONT_ACCESS_TOKEN ?? "",
     });

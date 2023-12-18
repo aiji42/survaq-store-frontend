@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
-export const runtime = "experimental-edge";
+// export const runtime = "experimental-edge";
 
 const Page = async () => {
   const host = headers().get("host");

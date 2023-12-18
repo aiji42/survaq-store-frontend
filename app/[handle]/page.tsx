@@ -8,7 +8,7 @@ import { Metadata } from "next";
 import { ProductPageCustomHead } from "@/components/ProductPageCustomHead";
 import { ActivateAddVariantToCart } from "@/components/ActivateAddVariantToCart";
 
-export const runtime = "experimental-edge";
+// export const runtime = "experimental-edge";
 
 type Props = {
   params: { handle: string };

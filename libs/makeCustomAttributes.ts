@@ -1,10 +1,9 @@
-import { Schedule, Variant } from "@/libs/getProduct";
+import { Variant } from "@/libs/getProduct";
 
 export type CustomAttributes = { key: string; value: string }[];
 
 export const makeCustomAttributes = (
   variant?: Variant,
-  schedule?: Pick<Schedule, "text" | "subText">,
   additionalSKUCodes: string[] = []
 ) => {
   return [
@@ -27,13 +26,5 @@ export const makeCustomAttributes = (
       key: "_source",
       value: `${location.origin}${location.pathname}`,
     },
-    ...(schedule
-      ? [
-          {
-            key: "配送予定",
-            value: `${schedule.text}(${schedule.subText})`,
-          },
-        ]
-      : []),
   ];
 };

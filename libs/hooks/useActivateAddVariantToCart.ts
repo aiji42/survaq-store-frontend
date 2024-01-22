@@ -48,7 +48,7 @@ export const useActivateAddVariantToCart = () => {
           ].components.cart[0].addVariantToCart(
             { id: `gid://shopify/ProductVariant/${variantId}` },
             quantity,
-            makeCustomAttributes(variant, schedule),
+            makeCustomAttributes(variant),
             true
           );
         };

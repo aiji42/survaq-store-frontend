@@ -37,7 +37,6 @@ export const AddToCart = (product: ProductPageData) => {
     window.ShopifyCustomAttribute = [
       ...makeCustomAttributes(
         variant,
-        schedule,
         selects.map(({ selected }) => selected.code)
       ),
       ...selects.map(({ label, selected }) => ({

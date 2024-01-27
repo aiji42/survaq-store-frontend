@@ -7,7 +7,7 @@ const Page = async () => {
   const host = headers().get("host");
 
   const res = await fetch(
-    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/by-domain/${host}/supabase`,
+    `${process.env.SURVAQ_API_ORIGIN}/products/page-data/by-domain/${host}`,
     { cache: "no-store" }
   );
   if (res.status === 404) return notFound();

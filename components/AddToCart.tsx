@@ -52,7 +52,7 @@ export const AddToCart = (product: ProductPageData) => {
         }
       ];  
     }
-    setShopifyCustomAttribute().then(console.log).catch(console.error)
+    setShopifyCustomAttribute().catch(console.error)
   }, [selects, variant])
   
   return (

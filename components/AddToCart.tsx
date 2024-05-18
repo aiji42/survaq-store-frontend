@@ -10,6 +10,7 @@ import {
   CustomAttributes,
   makeCustomAttributes,
 } from "@/libs/makeCustomAttributes";
+import { getGAClientId } from "@/libs/getGAClientId";
 
 type ProductObject = {
   selectedVariantTrackingInfo: { id: string };
@@ -35,15 +36,20 @@ export const AddToCart = (product: ProductPageData) => {
   
   useEffect(() => {
     const setShopifyCustomAttribute = async () => {
+      const ga = await getGAClientId();
       window.ShopifyCustomAttribute = [
-        ...(await makeCustomAttributes(
+        ...makeCustomAttributes(
           variant,
           selects.map(({ selected }) => selected.code)
-        )),
+        ),
         ...selects.map(({ label, selected }) => ({
           key: label,
           value: selected.name,
         })),
+        {
+          key: '_ga',
+          value: ga ?? ''
+        }
       ];  
     }
     setShopifyCustomAttribute().then(console.log).catch(console.error)

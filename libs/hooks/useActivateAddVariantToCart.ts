@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { getProductDataById } from "@/libs/getProduct";
-import { latest } from "@/libs/schedule";
 import { makeCustomAttributes } from "@/libs/makeCustomAttributes";
 
 const domain = `${process.env.NEXT_PUBLIC_STORE_DOMAIN}.${process.env.NEXT_PUBLIC_STORE_FRONT_ACCESS_TOKEN}`;
@@ -37,12 +36,7 @@ export const useActivateAddVariantToCart = () => {
             );
             return;
           }
-
-          const schedule = latest([
-            product.schedule,
-            variant?.defaultSchedule ?? null,
-          ]);
-
+          
           await window.ShopifyBuy.UI.domains[
             domain
           ].components.cart[0].addVariantToCart(

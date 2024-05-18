@@ -2,7 +2,7 @@
 
 import { ProductPageData } from "@/libs/getProduct";
 import Script from "next/script";
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
 import { MountOnOuterRoot } from "@/components/MountOnOuterRoot";
 import { latest } from "@/libs/schedule";
@@ -32,19 +32,23 @@ export const AddToCart = (product: ProductPageData) => {
     variant?.defaultSchedule ?? null,
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
-
-  if (typeof window !== "undefined")
-    window.ShopifyCustomAttribute = [
-      ...makeCustomAttributes(
-        variant,
-        selects.map(({ selected }) => selected.code)
-      ),
-      ...selects.map(({ label, selected }) => ({
-        key: label,
-        value: selected.name,
-      })),
-    ];
-
+  
+  useEffect(() => {
+    const setShopifyCustomAttribute = async () => {
+      window.ShopifyCustomAttribute = [
+        ...(await makeCustomAttributes(
+          variant,
+          selects.map(({ selected }) => selected.code)
+        )),
+        ...selects.map(({ label, selected }) => ({
+          key: label,
+          value: selected.name,
+        })),
+      ];  
+    }
+    setShopifyCustomAttribute().then(console.log).catch(console.error)
+  }, [selects, variant])
+  
   return (
     <>
       <MountOnOuterRoot target={target.current}>

@@ -3,11 +3,11 @@ import { getGAClientId } from "@/libs/getGAClientId";
 
 export type CustomAttributes = { key: string; value: string }[];
 
-export const makeCustomAttributes = (
+export const makeCustomAttributes = async (
   variant?: Variant,
   additionalSKUCodes: string[] = []
 ) => {
-  const ga = getGAClientId()
+  const ga = await getGAClientId()
   return [
     {
       key: "_skus",
@@ -28,9 +28,9 @@ export const makeCustomAttributes = (
       key: "_source",
       value: `${location.origin}${location.pathname}`,
     },
-    {
+    ...(ga ? [{
       key: '_ga',
-      value: ga ?? ''
-    }
+      value: ga
+    }] : [])
   ];
 };

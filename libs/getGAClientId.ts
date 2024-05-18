@@ -4,11 +4,12 @@ declare global {
   }
 }
 
-export const getGAClientId = (): undefined | string => {
+export const getGAClientId = async  (): Promise<undefined | string> => {
   if (typeof window === "undefined" || !('gtag' in window)) return undefined;
-  let clientId: string | undefined;
-  window.gtag?.('get', 'G-VLGZ0MSKT6', 'client_id', (client_id: string) => {
-    clientId = client_id;
-  })
-  return clientId;
+  
+  return new Promise((resolve) => {
+    window.gtag?.('get', 'G-VLGZ0MSKT6', 'client_id', (clientId: string) => {
+      resolve(clientId);
+    })
+  });
 }

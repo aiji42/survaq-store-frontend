@@ -10,7 +10,7 @@ export const makeCustomAttributes = (
     {
       key: "_skus",
       value: JSON.stringify([
-        ...(variant?.baseSKUs.map(({ code }) => code) ?? []),
+        ...(variant?.skus ?? []),
         ...additionalSKUCodes,
       ]),
     },

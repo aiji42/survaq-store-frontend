@@ -1,16 +1,15 @@
-import { ProductPageData, Schedule } from "@/libs/getProduct";
+import { Product, ProductPageData, Schedule } from "@/libs/getProduct";
 import { useEffect } from "react";
 
 const replaceSchedule = (
   schedule: Schedule,
   target: HTMLDivElement | HTMLParagraphElement | HTMLSpanElement
 ) => {
-  const index = Number(target.dataset.index ?? 0);
   const short = !!target.dataset.short;
-  target.innerText = schedule.texts[index]?.slice(short ? 5 : NaN) ?? "";
+  target.innerText = schedule.text.slice(short ? 5 : NaN) ?? "";
 };
 
-export const useReplaceSchedule = (product: ProductPageData) => {
+export const useReplaceSchedule = (product: Product) => {
   useEffect(() => {
     document
       .querySelectorAll<HTMLSpanElement>(".delivery-schedule")

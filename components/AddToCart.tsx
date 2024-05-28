@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductPageData } from "@/libs/getProduct";
+import { ProductPageData, Variant } from "@/libs/getProduct";
 import Script from "next/script";
 import { MutableRefObject, useEffect, useRef } from "react";
 import { useSkuSelectors } from "@/libs/hooks/useSkuSelectors";
@@ -25,9 +25,9 @@ type CartObject = {
   model: { webUrl: string };
 };
 
-export const AddToCart = (product: ProductPageData) => {
+export const AddToCart = ({ product }: ProductPageData) => {
   const target = useRef<HTMLDivElement>();
-  const { selects, variant, handleSku } = useSkuSelectors();
+  const { selects, variant, handleSku } = useSkuSelectors(product);
   const schedule = latest([
     product.schedule,
     variant?.defaultSchedule ?? null,
@@ -42,7 +42,7 @@ export const AddToCart = (product: ProductPageData) => {
           variant,
           selects.map(({ selected }) => selected.code)
         ),
-        ...selects.map(({ label, selected }) => ({
+        ...selects.map(({ label, selected }, index) => ({
           key: label,
           value: selected.name,
         })),
@@ -58,7 +58,7 @@ export const AddToCart = (product: ProductPageData) => {
   return (
     <>
       <MountOnOuterRoot target={target.current}>
-        {selects.map(({ label, selected }, index) => (
+        {selects.map(({ label, selected, skus }, index) => (
           <div key={index} className="shopify-buy__option-select">
             <label className="shopify-buy__option-select__label">{label}</label>
             <div className="shopify-buy__option-select-wrapper">
@@ -69,7 +69,7 @@ export const AddToCart = (product: ProductPageData) => {
                 }
                 defaultValue={selected.code}
               >
-                {variant?.selectableSKUs.map(({ name, code }) => (
+                {skus.map(({ name, code }) => (
                   <option key={code} value={code}>
                     {name}
                   </option>
@@ -112,7 +112,7 @@ const makeOnLoad =
     handleSku,
   }: {
     productId: number | string;
-    variants: ProductPageData["variants"];
+    variants: Variant[];
     target: MutableRefObject<HTMLDivElement | undefined>;
     handleSku: ReturnType<typeof useSkuSelectors>["handleSku"];
   }) =>

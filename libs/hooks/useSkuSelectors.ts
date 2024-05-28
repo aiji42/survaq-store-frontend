@@ -1,13 +1,18 @@
 import { useReducer } from "react";
-import { times } from "@/libs/times";
-import { SKU, Variant } from "@/libs/getProduct";
+import { Product, SKU, Variant } from "@/libs/getProduct";
 
 type Selects = {
   label: string;
+  skus: SKU[];
   selected: SKU;
 }[];
 
-export const useSkuSelectors = () => {
+const getSelectableSKUs = (product: Product, code: string) => {
+  const skuCodes = product.skuGroups[code]
+  return skuCodes.map((skuCode) => product.skus[skuCode])
+}
+
+export const useSkuSelectors = (product: Product) => {
   const [value, handleSku] = useReducer(
     (
       status: { selects: Selects; variant: Variant | undefined },
@@ -21,20 +26,19 @@ export const useSkuSelectors = () => {
         if (variant.variantId === status.variant?.variantId)
           return { selects: [...status.selects], variant };
         return {
-          selects: times(variant.skuSelectable).map((index) => ({
-            label: variant.skuLabel
-              ? variant.skuLabel.replace(/#/g, String(index + 1))
-              : "",
-            variant,
-            selected: variant.selectableSKUs[0],
-          })),
+          selects: variant.skuGroups.map(({ label, skuGroupCode }) => {
+            const skus = getSelectableSKUs(product, skuGroupCode)
+            return {
+              label,
+              skus,
+              selected: skus[0],
+            }
+          }),
           variant,
         };
       }
 
-      const sku = status.variant?.selectableSKUs.find(
-        ({ code }) => code === action.value
-      );
+      const sku = product.skus[action.value]
       if (!sku) throw new Error();
       status.selects[action.index].selected = sku;
 

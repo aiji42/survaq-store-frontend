@@ -1,29 +1,37 @@
 export type Schedule = {
-  year: number;
-  month: number;
-  term: "early" | "middle" | "late";
-  termIndex: number;
-  text: string;
-  texts: string[];
-  subText: string;
-};
+  year: number
+  month: number
+  term: 'early' | 'middle' | 'late'
+  termIndex: number
+  text: string
+  subText: string
+}
 
 export type SKU = {
-  code: string;
-  name: string;
-  subName: string;
-  schedule: Omit<Schedule, "texts"> | null;
-};
+  code: string
+  name: string
+  displayName: string
+  schedule: Schedule | null
+  sortNumber: number
+  skipDeliveryCalc: boolean
+}
 
 export type Variant = {
-  variantId: string;
-  variantName: string;
-  skuLabel: string | null;
-  skuSelectable: number;
-  baseSKUs: SKU[];
-  selectableSKUs: SKU[];
-  defaultSchedule: Omit<Schedule, "texts"> | null;
-};
+  variantId: string
+  variantName: string
+  skus: string[],
+  skuGroups: { label: string; skuGroupCode: string }[]
+  defaultSchedule: Schedule | null
+}
+
+export type Product = {
+  productId: string
+  productName: string
+  variants: Array<Variant>
+  skus: Record<string, SKU>
+  skuGroups: Record<string, string[]>
+  schedule: Schedule
+}
 
 type PageDataOriginal = {
   title: string | null;
@@ -41,13 +49,7 @@ type PageDataOriginal = {
   buyButton: boolean;
 };
 
-type ProductData = {
-  variants: Array<Variant>;
-  schedule: Schedule;
-  productId: string;
-};
-
-export type ProductPageData = ProductData &
+export type ProductPageData = { product: Product } &
   Omit<PageDataOriginal, "logo" | "favicon"> & {
     logo: { url: string; height: number; width: number } | null;
     favicon: { url: string } | null;
@@ -67,7 +69,7 @@ export const getProduct = async (
     throw new Error(await res.text());
   }
 
-  const json = (await res.json()) as PageDataOriginal & ProductData;
+  const json = (await res.json()) as PageDataOriginal & { product: Product };
 
   return {
     ...json,
@@ -86,7 +88,7 @@ export const getProduct = async (
   };
 };
 
-export const getProductDataById = async (id: string): Promise<ProductData> => {
+export const getProductDataById = async (id: string): Promise<Product> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SURVAQ_API_ORIGIN}/products/${id}`,
     { cache: "no-store" }
@@ -95,5 +97,5 @@ export const getProductDataById = async (id: string): Promise<ProductData> => {
     throw new Error(await res.text());
   }
 
-  return (await res.json()) as ProductData;
+  return (await res.json()) as Product;
 };

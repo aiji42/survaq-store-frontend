@@ -36,13 +36,13 @@ export const useActivateAddVariantToCart = () => {
             );
             return;
           }
-          
+
           await window.ShopifyBuy.UI.domains[
             domain
           ].components.cart[0].addVariantToCart(
             { id: `gid://shopify/ProductVariant/${variantId}` },
             quantity,
-            makeCustomAttributes(variant),
+            await makeCustomAttributes(variant),
             true
           );
         };

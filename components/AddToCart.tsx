@@ -33,28 +33,17 @@ export const AddToCart = ({ product }: ProductPageData) => {
     variant?.defaultSchedule ?? null,
     ...selects.map(({ selected: { schedule } }) => schedule),
   ]);
-  
+
   useEffect(() => {
     const setShopifyCustomAttribute = async () => {
-      const ga = await getGAClientId();
-      window.ShopifyCustomAttribute = [
-        ...makeCustomAttributes(
-          variant,
-          selects.map(({ selected }) => selected.code)
-        ),
-        ...selects.map(({ label, selected }, index) => ({
-          key: label,
-          value: selected.name,
-        })),
-        {
-          key: '_ga',
-          value: ga ?? ''
-        }
-      ];  
-    }
-    setShopifyCustomAttribute().catch(console.error)
-  }, [selects, variant])
-  
+      window.ShopifyCustomAttribute = await makeCustomAttributes(
+        variant,
+        selects
+      );
+    };
+    setShopifyCustomAttribute().catch(console.error);
+  }, [selects, variant]);
+
   return (
     <>
       <MountOnOuterRoot target={target.current}>

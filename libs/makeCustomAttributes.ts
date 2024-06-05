@@ -23,7 +23,7 @@ export const makeCustomAttributes = async (
       value: selected.name,
     })),
     ...selects.map(({ selected }, index) => ({
-      key: `_sku[${index + 1}]`,
+      key: `_sku${index + 1}`,
       value: selected.code,
     })),
     ...Array.from(new URL(location.href).searchParams).reduce<CustomAttributes>(

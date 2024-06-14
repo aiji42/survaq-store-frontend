@@ -10,21 +10,23 @@ export const makeCustomAttributes = async (
 ) => {
   const ga = await getGAClientId();
 
+  const allSkuCodes = [
+    ...(variant?.skus ?? []),
+    ...selects.map(({ selected }) => selected.code),
+  ];
+
   return [
     {
       key: "_skus",
-      value: JSON.stringify([
-        ...(variant?.skus ?? []),
-        ...selects.map(({ selected }) => selected.code),
-      ]),
+      value: JSON.stringify(allSkuCodes),
     },
     ...selects?.map(({ label, selected }, index) => ({
       key: label,
       value: selected.name,
     })),
-    ...selects.map(({ selected }, index) => ({
+    ...allSkuCodes.map((code, index) => ({
       key: `_sku${index + 1}`,
-      value: selected.code,
+      value: code,
     })),
     ...Array.from(new URL(location.href).searchParams).reduce<CustomAttributes>(
       (res, [key, value]) => {
